@@ -128,6 +128,21 @@ import { Icon } from 'astro-icon/components';
 
     <!-- List -->
     <div id="task-list" class="mt-8 grid gap-3" aria-live="polite"></div>
+
+    <!-- Backlog — отдельным блоком, не смешивается с основным планом -->
+    <div id="backlog-section" class="mt-12 hidden">
+      <div class="flex items-center gap-3 border-t border-border pt-8">
+        <h2 class="font-display text-xl text-foreground">Backlog</h2>
+        <span class="rounded-sm bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+          на потом
+        </span>
+      </div>
+      <p class="mt-2 max-w-2xl text-sm text-muted-foreground">
+        Отложено — вернёмся к этому после MVP и остального плана. Не входит в текущий
+        приоритет.
+      </p>
+      <div id="backlog-list" class="mt-6 grid gap-3" aria-live="polite"></div>
+    </div>
   </section>
 
   <SiteFooter slot="footer" />
@@ -207,6 +222,8 @@ import { Icon } from 'astro-icon/components';
       A: 'Instagram · Трек A',
       B: 'Instagram · Трек B',
     };
+
+    const BACKLOG_TRACK = 'Backlog';
 
     function iconHtml(key: string): string {
       const el = document.querySelector(`[data-icon-for="${key}"]`);
@@ -290,6 +307,8 @@ import { Icon } from 'astro-icon/components';
       const stateError = document.getElementById('state-error')!;
       const stateEmpty = document.getElementById('state-empty')!;
       const listEl = document.getElementById('task-list')!;
+      const backlogSection = document.getElementById('backlog-section')!;
+      const backlogListEl = document.getElementById('backlog-list')!;
       const template = document.getElementById('task-card-template') as HTMLTemplateElement;
       const retryButton = document.getElementById('retry-button')!;
 
@@ -387,15 +406,29 @@ import { Icon } from 'astro-icon/components';
           order === 'asc' ? a.difficulty - b.difficulty : b.difficulty - a.difficulty,
         );
 
+        const mainTasks = filtered.filter((t) => t.track !== BACKLOG_TRACK);
+        const backlogTasks = filtered.filter((t) => t.track === BACKLOG_TRACK);
+
         listEl.innerHTML = '';
         if (filtered.length === 0) {
           stateEmpty.classList.remove('hidden');
         } else {
           stateEmpty.classList.add('hidden');
-          filtered.forEach((task) => {
+          mainTasks.forEach((task) => {
             listEl.appendChild(buildCard(task, template));
           });
         }
+
+        backlogListEl.innerHTML = '';
+        if (backlogTasks.length === 0) {
+          backlogSection.classList.add('hidden');
+        } else {
+          backlogSection.classList.remove('hidden');
+          backlogTasks.forEach((task) => {
+            backlogListEl.appendChild(buildCard(task, template));
+          });
+        }
+
         resultsCount.textContent = `Показано задач: ${filtered.length} из ${scopeTasks.length}`;
       }
 
