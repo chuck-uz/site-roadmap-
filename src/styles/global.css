@@ -35,16 +35,11 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* 8pt spacing scale */
-  --spacing-4xs: 4px;
-  --spacing-3xs: 8px;
-  --spacing-2xs: 12px;
-  --spacing-xs: 16px;
-  --spacing-sm: 24px;
-  --spacing-md: 32px;
-  --spacing-lg: 48px;
-  --spacing-xl: 64px;
-  --spacing-2xl: 96px;
+  /* 8pt spacing: Tailwind's default --spacing base (0.25rem/4px) already gives an
+     8pt-compatible scale (p-1=4px, p-2=8px, p-3=12px, p-4=16px, p-6=24px, p-8=32px,
+     p-12=48px, p-16=64px, p-24=96px). Named overrides here previously collided with
+     Tailwind's built-in max-w-{sm,md,lg,xl,2xl} scale, which resolves through the
+     same --spacing-* namespace — do not reintroduce named spacing keys. */
 
   /* Radius */
   --radius-sm: 8px;

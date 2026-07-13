@@ -11,21 +11,21 @@ import { Icon } from 'astro-icon/components';
 >
   <SiteHeader slot="header" />
 
-  <section class="mx-auto max-w-6xl px-4 pb-2xl pt-lg sm:px-6">
+  <section class="mx-auto max-w-6xl px-4 pb-24 pt-12 sm:px-6">
     <h1 class="font-display text-3xl text-foreground sm:text-4xl">Дорожная карта</h1>
-    <p class="mt-2xs max-w-2xl text-muted-foreground">
+    <p class="mt-3 max-w-2xl text-muted-foreground">
       Данные загружаются напрямую из репозитория разработки, поэтому статус здесь всегда
       совпадает с актуальным планом.
     </p>
 
     <!-- Progress -->
-    <div class="mt-md rounded-lg border border-border bg-card p-sm shadow-card">
-      <div class="flex flex-wrap items-center justify-between gap-2xs">
+    <div class="mt-8 rounded-lg border border-border bg-card p-6 shadow-card">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="font-semibold text-foreground" id="progress-label">Прогресс</p>
         <p class="text-sm text-muted-foreground" id="progress-fraction"></p>
       </div>
       <div
-        class="mt-2xs h-3 w-full overflow-hidden rounded-sm bg-muted"
+        class="mt-3 h-3 w-full overflow-hidden rounded-sm bg-muted"
         role="progressbar"
         aria-labelledby="progress-label"
         aria-valuemin="0"
@@ -39,48 +39,48 @@ import { Icon } from 'astro-icon/components';
         >
         </div>
       </div>
-      <div class="mt-2xs flex flex-wrap gap-xs text-xs text-muted-foreground" id="progress-breakdown">
+      <div class="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground" id="progress-breakdown">
       </div>
     </div>
 
     <!-- Controls -->
     <div
-      class="mt-md flex flex-wrap items-end gap-sm rounded-lg border border-border bg-card p-sm shadow-card"
+      class="mt-8 flex flex-wrap items-end gap-6 rounded-lg border border-border bg-card p-6 shadow-card"
       role="group"
       aria-label="Фильтры и сортировка дорожной карты"
     >
-      <label class="flex flex-col gap-4xs text-sm">
+      <label class="flex flex-col gap-1 text-sm">
         <span class="font-medium text-foreground">Веха</span>
         <select
           id="filter-milestone"
-          class="min-w-[12rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+          class="min-w-[12rem] rounded-sm border border-border bg-background px-3 py-1 text-sm text-foreground cursor-pointer"
         >
           <option value="all">Все вехи</option>
         </select>
       </label>
-      <label class="flex flex-col gap-4xs text-sm">
+      <label class="flex flex-col gap-1 text-sm">
         <span class="font-medium text-foreground">Трек</span>
         <select
           id="filter-track"
-          class="min-w-[12rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+          class="min-w-[12rem] rounded-sm border border-border bg-background px-3 py-1 text-sm text-foreground cursor-pointer"
         >
           <option value="all">Все треки</option>
         </select>
       </label>
-      <label class="flex flex-col gap-4xs text-sm">
+      <label class="flex flex-col gap-1 text-sm">
         <span class="font-medium text-foreground">Статус</span>
         <select
           id="filter-status"
-          class="min-w-[10rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+          class="min-w-[10rem] rounded-sm border border-border bg-background px-3 py-1 text-sm text-foreground cursor-pointer"
         >
           <option value="all">Любой статус</option>
         </select>
       </label>
-      <label class="flex flex-col gap-4xs text-sm">
+      <label class="flex flex-col gap-1 text-sm">
         <span class="font-medium text-foreground">Сортировка</span>
         <select
           id="sort-order"
-          class="min-w-[14rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+          class="min-w-[14rem] rounded-sm border border-border bg-background px-3 py-1 text-sm text-foreground cursor-pointer"
         >
           <option value="asc">По сложности: сначала простые</option>
           <option value="desc">По сложности: сначала сложные</option>
@@ -90,7 +90,7 @@ import { Icon } from 'astro-icon/components';
     </div>
 
     <!-- Loading -->
-    <div id="state-loading" class="mt-md space-y-2xs" aria-live="polite">
+    <div id="state-loading" class="mt-8 space-y-3" aria-live="polite">
       {
         Array.from({ length: 4 }).map(() => (
           <div class="h-24 animate-pulse rounded-lg border border-border bg-card" />
@@ -101,17 +101,17 @@ import { Icon } from 'astro-icon/components';
     <!-- Error -->
     <div
       id="state-error"
-      class="mt-md hidden rounded-lg border border-destructive/30 bg-destructive/5 p-sm text-sm text-foreground"
+      class="mt-8 hidden rounded-lg border border-destructive/30 bg-destructive/5 p-6 text-sm text-foreground"
       role="alert"
     >
       <p class="font-semibold">Не удалось загрузить дорожную карту.</p>
-      <p class="mt-4xs text-muted-foreground">
+      <p class="mt-1 text-muted-foreground">
         Проверьте соединение с интернетом и попробуйте ещё раз.
       </p>
       <button
         id="retry-button"
         type="button"
-        class="mt-2xs inline-flex items-center gap-4xs rounded-sm bg-primary px-xs py-2xs text-sm font-semibold text-primary-foreground cursor-pointer"
+        class="mt-3 inline-flex items-center gap-1 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground cursor-pointer"
       >
         <Icon name="heroicons:arrow-path" class="h-4 w-4" aria-hidden="true" />
         Повторить
@@ -121,13 +121,13 @@ import { Icon } from 'astro-icon/components';
     <!-- Empty -->
     <div
       id="state-empty"
-      class="mt-md hidden rounded-lg border border-border bg-card p-sm text-sm text-muted-foreground"
+      class="mt-8 hidden rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground"
     >
       По выбранным фильтрам задач не найдено. Попробуйте изменить веху, трек или статус.
     </div>
 
     <!-- List -->
-    <div id="task-list" class="mt-md grid gap-2xs" aria-live="polite"></div>
+    <div id="task-list" class="mt-8 grid gap-3" aria-live="polite"></div>
   </section>
 
   <SiteFooter slot="footer" />
@@ -145,17 +145,17 @@ import { Icon } from 'astro-icon/components';
 
   <template id="task-card-template">
     <article
-      class="task-card rounded-lg border border-border bg-card p-sm shadow-card transition-shadow duration-200 hover:shadow-card-hover"
+      class="task-card rounded-lg border border-border bg-card p-6 shadow-card transition-shadow duration-200 hover:shadow-card-hover"
     >
-      <div class="flex flex-wrap items-start justify-between gap-2xs">
-        <div class="flex items-center gap-2xs">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div class="flex items-center gap-3">
           <span
-            class="task-id inline-flex items-center rounded-sm bg-muted px-2xs py-4xs font-mono text-xs font-semibold text-muted-foreground"
+            class="task-id inline-flex items-center rounded-sm bg-muted px-3 py-1 font-mono text-xs font-semibold text-muted-foreground"
           ></span>
           <h3 class="task-title font-display text-lg text-foreground"></h3>
         </div>
         <span
-          class="status-badge inline-flex items-center gap-4xs rounded-sm px-2xs py-4xs text-xs font-semibold"
+          class="status-badge inline-flex items-center gap-1 rounded-sm px-3 py-1 text-xs font-semibold"
           data-status=""
         >
           <span class="status-icon-slot inline-flex h-3.5 w-3.5 [&_svg]:h-3.5 [&_svg]:w-3.5"></span>
@@ -163,31 +163,31 @@ import { Icon } from 'astro-icon/components';
         </span>
       </div>
 
-      <div class="mt-2xs flex flex-wrap items-center gap-2xs text-xs text-muted-foreground">
-        <span class="track-chip inline-flex items-center rounded-sm border border-border px-2xs py-4xs"
+      <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <span class="track-chip inline-flex items-center rounded-sm border border-border px-3 py-1"
         ></span>
         <span
-          class="difficulty-badge inline-flex items-center gap-4xs"
+          class="difficulty-badge inline-flex items-center gap-1"
         >
           <span class="dots inline-flex gap-[2px] [&_svg]:h-3 [&_svg]:w-3"></span>
           <span class="difficulty-text font-medium"></span>
         </span>
         <span
-          class="review-badge hidden inline-flex items-center gap-4xs rounded-sm bg-status-in_progress-bg px-2xs py-4xs font-semibold text-status-in_progress-fg [&_svg]:h-3.5 [&_svg]:w-3.5"
+          class="review-badge hidden inline-flex items-center gap-1 rounded-sm bg-status-in_progress-bg px-3 py-1 font-semibold text-status-in_progress-fg [&_svg]:h-3.5 [&_svg]:w-3.5"
         ></span>
       </div>
 
-      <p class="deps-line mt-2xs hidden text-xs text-muted-foreground">
+      <p class="deps-line mt-3 hidden text-xs text-muted-foreground">
         Зависит от: <span class="deps-list font-mono"></span>
       </p>
 
-      <details class="details-block mt-2xs">
+      <details class="details-block mt-3">
         <summary class="cursor-pointer text-sm font-medium text-accent">
           Подзадачи и критерий готовности
         </summary>
-        <ul class="subtasks-list mt-2xs list-disc space-y-4xs pl-xs text-sm text-muted-foreground"
+        <ul class="subtasks-list mt-3 list-disc space-y-1 pl-4 text-sm text-muted-foreground"
         ></ul>
-        <p class="done-when mt-2xs rounded-sm bg-muted p-2xs text-sm text-foreground"></p>
+        <p class="done-when mt-3 rounded-sm bg-muted p-3 text-sm text-foreground"></p>
       </details>
     </article>
   </template>
@@ -359,7 +359,7 @@ import { Icon } from 'astro-icon/components';
           .forEach(([status, count]) => {
             const span = document.createElement('span');
             span.className =
-              'status-badge inline-flex items-center gap-4xs rounded-sm px-2xs py-4xs';
+              'status-badge inline-flex items-center gap-1 rounded-sm px-3 py-1';
             span.dataset.status = status;
             span.textContent = `${STATUS_LABELS[status]}: ${count}`;
             progressBreakdown.appendChild(span);

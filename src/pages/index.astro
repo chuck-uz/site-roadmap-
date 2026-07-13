@@ -4,6 +4,13 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { Icon } from 'astro-icon/components';
 
+const valueProps = [
+  'Ответы клиентам 24/7',
+  'Все каналы в одном окне',
+  'Решения на данных, а не на глаз',
+  'Рост без расширения штата',
+];
+
 const painPoints = [
   {
     icon: 'heroicons:clock',
@@ -27,15 +34,66 @@ const productPoints = [
     number: '01',
     title: 'Консультация и заявка',
     lead: 'Главная задача — не поговорить, а получить заявку.',
-    text: 'ИИ круглосуточно отвечает клиентам в Instagram и на сайте, помогает определиться с направлением и собирает структурированную заявку: куда, сколько человек, даты, бюджет, контакт, пожелания. Дальше в дело вступает менеджер — он созванивается, подбирает тур и закрывает продажу. ИИ никогда не называет финальные цены и не закрывает сделку сам.',
+    text: 'ИИ на базе Claude круглосуточно ведёт первичную консультацию с клиентом — в директе Instagram, в комментариях и в чате на сайте — и доводит разговор до структурированной заявки, которую сразу можно передать в работу менеджеру.',
+    bullets: [
+      'Собирает всё важное: направление, число людей (взрослые/дети), даты (можно примерные), ориентир по бюджету, контакт и особые пожелания.',
+      'Спрашивает недостающее по одному вопросу, без допроса — и сохраняет даже частичную заявку, если клиент ответил не на всё.',
+      'Никогда не называет финальные цены и не закрывает сделку сама — тур собирает и продаёт человек.',
+      'Каждая заявка попадает в раздел «Заявки» — мини-CRM со статусами (новая / в работе / закрыта) и источником обращения.',
+    ],
     icon: 'heroicons:chat-bubble-left-right',
   },
   {
     number: '02',
     title: 'Продвижение и рост аккаунта',
     lead: 'Первый поинт превращает трафик в заявки — второй наращивает сам трафик.',
-    text: 'Платформа строит контент-планы, показывает, какие публикации и форматы реально работают, подсвечивает узкие места воронки и подсказывает, в каком направлении усиливать аккаунт. Больше охват и вовлечённость — больше диалогов и заявок.',
+    text: 'Платформа копит аналитику по каждому каналу, а Claude превращает её в понятные выводы и приоритеты — что усиливать, а что менять.',
+    bullets: [
+      'Контент-план и черновики текстов для контент-календаря: темы, форматы (пост/Reels/сторис), дни и время публикации.',
+      'Аналитика по охвату, вовлечённости, сохранениям, аудитории и времени публикации — с историей и трендами, а не только текущими цифрами.',
+      'Подсвечивает узкие места: слабые форматы, неудачное время, спад охвата, разрыв между тем, что спрашивают в директе, и тем, что есть в контенте.',
+      'Рекомендует направление аккаунта — на что делать упор и куда двигаться — и связывает это с тем, какой контент реально приводит заявки.',
+    ],
     icon: 'heroicons:arrow-trending-up',
+  },
+];
+
+const capabilityGroups = [
+  {
+    title: 'Instagram',
+    icon: 'heroicons:camera',
+    items: [
+      'Отвечает на комментарии по сценариям и переводит диалог в директ',
+      'Отвечает в личных сообщениях (директ) по сценариям',
+      'Собирает аналитику аккаунта и по каждой публикации',
+      'Публикует посты, Reels и сторис, в том числе отложенно',
+      'Строит контент-план и пишет черновики текстов',
+    ],
+  },
+  {
+    title: 'Сайт',
+    icon: 'heroicons:globe-alt',
+    items: [
+      'Каталог туров и направлений, лид-формы, кнопки мессенджеров',
+      'Веб-аналитика посещений и источников трафика',
+      'Чат-ассистент на том же ядре агента — отвечает про туры и собирает заявки',
+    ],
+  },
+  {
+    title: 'Сквозной слой',
+    icon: 'heroicons:arrows-right-left',
+    items: [
+      'Единая воронка Instagram → сайт → заявка',
+      'AI-разбор всех данных с конкретными рекомендациями по контенту и продвижению',
+    ],
+  },
+  {
+    title: 'Позже',
+    icon: 'heroicons:clock',
+    items: [
+      'Управление рекламой в Instagram и Facebook',
+      'Telegram, Messenger, WhatsApp, TikTok — по мере доступности их API',
+    ],
   },
 ];
 
@@ -83,54 +141,64 @@ const reviewFacts = [
   <SiteHeader slot="header" />
 
   <!-- Hero -->
-  <section class="mx-auto max-w-6xl px-4 pb-2xl pt-xl sm:px-6">
+  <section class="mx-auto max-w-6xl px-4 pb-24 pt-16 sm:px-6">
     <div class="max-w-3xl">
       <p
-        class="inline-flex items-center gap-4xs rounded-sm bg-muted px-2xs py-4xs text-sm font-medium text-muted-foreground"
+        class="inline-flex items-center gap-1 rounded-sm bg-muted px-3 py-1 text-sm font-medium text-muted-foreground"
       >
         <Icon name="heroicons:sparkles" class="h-4 w-4 text-accent" aria-hidden="true" />
         Instagram + сайт турагентства в одном окне
       </p>
-      <h1 class="mt-xs font-display text-4xl leading-tight text-foreground sm:text-5xl">
+      <h1 class="mt-4 font-display text-4xl leading-tight text-foreground sm:text-5xl">
         ИИ отвечает клиентам и приносит заявки — пока вы продаёте туры
       </h1>
-      <p class="mt-xs text-lg leading-relaxed text-muted-foreground">
+      <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
         Единая платформа управления и продвижения Instagram-аккаунта и сайта турагентства.
         Она решает две задачи: доводит клиента до структурированной заявки и помогает
         аккаунту расти так, чтобы заявок становилось больше.
       </p>
-      <div class="mt-sm flex flex-wrap gap-2xs">
+      <div class="mt-6 flex flex-wrap gap-3">
         <a
           href="#suet"
-          class="inline-flex items-center gap-4xs rounded-sm bg-primary px-xs py-2xs text-sm font-semibold text-primary-foreground shadow-card transition-colors duration-200 hover:bg-primary/90 cursor-pointer"
+          class="inline-flex items-center gap-1 rounded-sm bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-card transition-colors duration-200 hover:bg-primary/90 cursor-pointer"
         >
           В чём суть
           <Icon name="heroicons:arrow-down" class="h-4 w-4" aria-hidden="true" />
         </a>
         <a
           href="/roadmap"
-          class="inline-flex items-center gap-4xs rounded-sm border border-border bg-card px-xs py-2xs text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-muted cursor-pointer"
+          class="inline-flex items-center gap-1 rounded-sm border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-muted cursor-pointer"
         >
           Смотреть дорожную карту
           <Icon name="heroicons:arrow-right" class="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
+      <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+        {
+          valueProps.map((item) => (
+            <li class="flex items-center gap-1">
+              <Icon name="heroicons:check" class="h-4 w-4 text-accent" aria-hidden="true" />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
   <!-- Problem -->
   <section id="suet" class="border-y border-border bg-card">
-    <div class="mx-auto max-w-6xl px-4 py-xl sm:px-6">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <h2 class="font-display text-2xl text-foreground sm:text-3xl">
         Проблема, которую мы решаем
       </h2>
-      <div class="mt-md grid gap-sm sm:grid-cols-3">
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
         {
           painPoints.map((point) => (
-            <div class="rounded-md border border-border bg-background p-sm">
+            <div class="rounded-md border border-border bg-background p-6">
               <Icon name={point.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
-              <h3 class="mt-2xs font-semibold text-foreground">{point.title}</h3>
-              <p class="mt-4xs text-sm leading-relaxed text-muted-foreground">{point.text}</p>
+              <h3 class="mt-3 font-semibold text-foreground">{point.title}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{point.text}</p>
             </div>
           ))
         }
@@ -139,18 +207,18 @@ const reviewFacts = [
   </section>
 
   <!-- Two product points -->
-  <section class="mx-auto max-w-6xl px-4 py-2xl sm:px-6">
+  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
     <h2 class="font-display text-2xl text-foreground sm:text-3xl">Как платформа это решает</h2>
-    <p class="mt-2xs max-w-2xl text-muted-foreground">
+    <p class="mt-3 max-w-2xl text-muted-foreground">
       В основе — два поинта продукта. Они усиливают друг друга: рост аккаунта даёт больше
       диалогов и больше заявок, а данные о заявках показывают, какой контент реально
       приводит клиентов.
     </p>
-    <div class="mt-md grid gap-sm lg:grid-cols-2">
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
       {
         productPoints.map((point) => (
-          <div class="rounded-lg border border-border bg-card p-md shadow-card">
-            <div class="flex items-center gap-2xs">
+          <div class="rounded-lg border border-border bg-card p-8 shadow-card">
+            <div class="flex items-center gap-3">
               <span
                 class="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-primary-foreground"
                 aria-hidden="true"
@@ -159,30 +227,77 @@ const reviewFacts = [
               </span>
               <span class="font-mono text-sm text-muted-foreground">{point.number}</span>
             </div>
-            <h3 class="mt-2xs font-display text-xl text-foreground">{point.title}</h3>
-            <p class="mt-4xs font-medium text-accent">{point.lead}</p>
-            <p class="mt-2xs leading-relaxed text-muted-foreground">{point.text}</p>
+            <h3 class="mt-3 font-display text-xl text-foreground">{point.title}</h3>
+            <p class="mt-1 font-medium text-accent">{point.lead}</p>
+            <p class="mt-3 leading-relaxed text-muted-foreground">{point.text}</p>
+            <ul class="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
+              {point.bullets.map((bullet) => (
+                <li class="flex gap-2">
+                  <Icon
+                    name="heroicons:check-circle"
+                    class="mt-1 h-4 w-4 shrink-0 text-accent"
+                    aria-hidden="true"
+                  />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))
       }
     </div>
   </section>
 
+  <!-- Concrete capability list -->
+  <section class="border-y border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="font-display text-2xl text-foreground sm:text-3xl">
+        Что конкретно умеет платформа
+      </h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">
+        Полный список того, что делает платформа уже сегодня и что добавится по мере
+        роста — без общих слов.
+      </p>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          capabilityGroups.map((group) => (
+            <div class="rounded-md border border-border bg-background p-6">
+              <Icon name={group.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
+              <h3 class="mt-3 font-semibold text-foreground">{group.title}</h3>
+              <ul class="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
+                {group.items.map((item) => (
+                  <li class="flex gap-2">
+                    <Icon
+                      name="heroicons:check"
+                      class="mt-1 h-4 w-4 shrink-0 text-accent"
+                      aria-hidden="true"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <!-- How it's built: tracks -->
   <section class="border-y border-border bg-muted/40">
-    <div class="mx-auto max-w-6xl px-4 py-xl sm:px-6">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <h2 class="font-display text-2xl text-foreground sm:text-3xl">Как устроен запуск</h2>
-      <p class="mt-2xs max-w-2xl text-muted-foreground">
+      <p class="mt-3 max-w-2xl text-muted-foreground">
         Разработка идёт в два трека — часть возможностей заказчик получает уже в первые
         недели, часть подключается позже, после проверки со стороны Meta.
       </p>
-      <div class="mt-md grid gap-sm sm:grid-cols-2">
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
         {
           tracks.map((track) => (
-            <div class="rounded-md border border-border bg-card p-sm">
+            <div class="rounded-md border border-border bg-card p-6">
               <Icon name={track.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
-              <h3 class="mt-2xs font-semibold text-foreground">{track.label}</h3>
-              <p class="mt-4xs text-sm leading-relaxed text-muted-foreground">{track.text}</p>
+              <h3 class="mt-3 font-semibold text-foreground">{track.label}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{track.text}</p>
             </div>
           ))
         }
@@ -191,18 +306,18 @@ const reviewFacts = [
   </section>
 
   <!-- Meta review nuance — progressive disclosure -->
-  <section class="mx-auto max-w-6xl px-4 py-2xl sm:px-6">
-    <div class="flex items-start gap-2xs">
+  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <div class="flex items-start gap-3">
       <Icon
         name="heroicons:shield-exclamation"
-        class="mt-4xs h-6 w-6 shrink-0 text-accent"
+        class="mt-1 h-6 w-6 shrink-0 text-accent"
         aria-hidden="true"
       />
       <div>
         <h2 class="font-display text-2xl text-foreground sm:text-3xl">
           Нюанс, о котором честно стоит знать: проверка Meta
         </h2>
-        <p class="mt-2xs max-w-2xl text-muted-foreground">
+        <p class="mt-3 max-w-2xl text-muted-foreground">
           Директ, публикации и реклама в Instagram не включаются по щелчку — Meta требует
           пройти App Review. Ниже — подробности для тех, кому важно понимать процесс
           целиком; для повседневной работы с платформой это не обязательно читать.
@@ -210,12 +325,12 @@ const reviewFacts = [
       </div>
     </div>
 
-    <div class="mt-sm space-y-2xs">
+    <div class="mt-6 space-y-3">
       {
         reviewFacts.map((block) => (
           <details class="group rounded-md border border-border bg-card open:shadow-card">
             <summary
-              class="flex cursor-pointer list-none items-center justify-between gap-2xs px-sm py-2xs font-semibold text-foreground"
+              class="flex cursor-pointer list-none items-center justify-between gap-3 px-6 py-3 font-semibold text-foreground"
             >
               {block.title}
               <Icon
@@ -224,12 +339,12 @@ const reviewFacts = [
                 aria-hidden="true"
               />
             </summary>
-            <ul class="space-y-4xs px-sm pb-sm text-sm leading-relaxed text-muted-foreground">
+            <ul class="space-y-1 px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
               {block.items.map((item) => (
-                <li class="flex gap-2xs">
+                <li class="flex gap-3">
                   <Icon
                     name="heroicons:check-circle"
-                    class="mt-4xs h-4 w-4 shrink-0 text-accent"
+                    class="mt-1 h-4 w-4 shrink-0 text-accent"
                     aria-hidden="true"
                   />
                   <span>{item}</span>
@@ -245,20 +360,20 @@ const reviewFacts = [
   <!-- Roadmap preview / CTA -->
   <section class="border-t border-border bg-primary">
     <div
-      class="mx-auto flex max-w-6xl flex-col items-start gap-sm px-4 py-xl sm:flex-row sm:items-center sm:justify-between sm:px-6"
+      class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:flex-row sm:items-center sm:justify-between sm:px-6"
     >
       <div>
         <h2 class="font-display text-2xl text-primary-foreground sm:text-3xl">
           Полный план — по шагам, с текущим статусом
         </h2>
-        <p class="mt-2xs max-w-xl text-primary-foreground/80">
+        <p class="mt-3 max-w-xl text-primary-foreground/80">
           Каждая задача — с описанием, зависимостями, отметкой «нужен ревью» и понятным
           критерием готовности. Статусы обновляются по ходу разработки.
         </p>
       </div>
       <a
         href="/roadmap"
-        class="inline-flex shrink-0 items-center gap-4xs rounded-sm bg-accent px-sm py-2xs text-sm font-semibold text-accent-foreground shadow-card transition-colors duration-200 hover:bg-accent/90 cursor-pointer"
+        class="inline-flex shrink-0 items-center gap-1 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-card transition-colors duration-200 hover:bg-accent/90 cursor-pointer"
       >
         Открыть дорожную карту
         <Icon name="heroicons:arrow-right" class="h-4 w-4" aria-hidden="true" />

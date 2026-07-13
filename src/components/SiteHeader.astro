@@ -10,7 +10,7 @@ const navItems = [
 
 <header class="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur">
   <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-    <a href="/" class="flex items-center gap-3xs font-display text-lg text-foreground">
+    <a href="/" class="flex items-center gap-2 font-display text-lg text-foreground">
       <span
         class="flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-primary-foreground"
         aria-hidden="true"
@@ -19,7 +19,7 @@ const navItems = [
       </span>
       <span>Платформа турагентства</span>
     </a>
-    <nav aria-label="Основная навигация" class="flex items-center gap-xs">
+    <nav aria-label="Основная навигация" class="flex items-center gap-4">
       {
         navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -28,7 +28,7 @@ const navItems = [
               href={item.href}
               aria-current={isActive ? 'page' : undefined}
               class:list={[
-                'rounded-sm px-2xs py-4xs text-sm font-medium transition-colors duration-200',
+                'rounded-sm px-3 py-1 text-sm font-medium transition-colors duration-200',
                 isActive
                   ? 'bg-muted text-foreground'
                   : 'text-muted-foreground hover:text-foreground',
