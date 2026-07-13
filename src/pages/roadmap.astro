@@ -16,7 +16,10 @@ import { Icon } from 'astro-icon/components';
     <p class="mt-3 max-w-2xl text-muted-foreground">
       Данные загружаются напрямую из репозитория разработки, поэтому статус здесь всегда
       совпадает с актуальным планом. Задачи разбиты по этапам сборки — сверху то, что делаем
-      сначала, ниже то, что позже. Сайт турагентства — отдельный, независимый трек.
+      сначала, ниже то, что позже. Сайт турагентства — отдельный, независимый трек. Общий
+      прогресс отражает ветку <code class="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">main</code> —
+      если статус задачи уже продвинулся в <code class="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">dev</code>,
+      но ещё не влит в main, на карточке появится бейдж «В тесте».
     </p>
 
     <!-- Quick nav -->
@@ -263,6 +266,7 @@ import { Icon } from 'astro-icon/components';
     <span data-icon-for="blocked"><Icon name="heroicons:lock-closed" /></span>
     <span data-icon-for="done"><Icon name="heroicons:check-circle" /></span>
     <span data-icon-for="review"><Icon name="heroicons:shield-exclamation" /></span>
+    <span data-icon-for="dev"><Icon name="heroicons:beaker" /></span>
     <span data-icon-for="dot-filled"><Icon name="heroicons:star-solid" /></span>
     <span data-icon-for="dot-empty"><Icon name="heroicons:star" /></span>
   </div>
@@ -299,6 +303,10 @@ import { Icon } from 'astro-icon/components';
         <span
           class="review-badge hidden inline-flex items-center gap-1 rounded-sm bg-status-in_progress-bg px-3 py-1 font-semibold text-status-in_progress-fg [&_svg]:h-3.5 [&_svg]:w-3.5"
         ></span>
+        <span
+          class="dev-badge hidden inline-flex items-center gap-1 rounded-sm bg-accent/10 px-3 py-1 font-semibold text-accent [&_svg]:h-3.5 [&_svg]:w-3.5"
+          title="В main этот статус ещё не запушен — актуален только в dev"
+        ></span>
       </div>
 
       <p class="deps-line mt-3 hidden text-xs text-muted-foreground">
@@ -317,8 +325,12 @@ import { Icon } from 'astro-icon/components';
   </template>
 
   <script>
+    // main = прод-статус (что реально смёржено/задеплоено), dev = текущая работа,
+    // ещё не влитая в main. Разница между ними подсвечивается бейджем «в тесте».
     const ROADMAP_URL =
       'https://raw.githubusercontent.com/chuck-uz/SMMPlatform/main/roadmap.json';
+    const DEV_ROADMAP_URL =
+      'https://raw.githubusercontent.com/chuck-uz/SMMPlatform/dev/roadmap.json';
 
     const STATUS_LABELS: Record<string, string> = {
       todo: 'Ожидает',
@@ -355,7 +367,11 @@ import { Icon } from 'astro-icon/components';
       return out;
     }
 
-    function buildCard(task: any, template: HTMLTemplateElement): HTMLElement {
+    function buildCard(
+      task: any,
+      template: HTMLTemplateElement,
+      devStatusById: Record<string, string>,
+    ): HTMLElement {
       const node = template.content.cloneNode(true) as HTMLElement;
       const article = node.querySelector('.task-card') as HTMLElement;
 
@@ -378,6 +394,13 @@ import { Icon } from 'astro-icon/components';
       if (task.review) {
         reviewBadge.classList.remove('hidden');
         reviewBadge.innerHTML = `${iconHtml('review')}<span>Нужен ревью Meta</span>`;
+      }
+
+      const devBadge = node.querySelector('.dev-badge') as HTMLElement;
+      const devStatus = devStatusById[task.id];
+      if (devStatus && devStatus !== task.status) {
+        devBadge.classList.remove('hidden');
+        devBadge.innerHTML = `${iconHtml('dev')}<span>В тесте: ${STATUS_LABELS[devStatus] ?? devStatus}</span>`;
       }
 
       const depsLine = node.querySelector('.deps-line') as HTMLElement;
@@ -457,6 +480,21 @@ import { Icon } from 'astro-icon/components';
 
       stateLoading.classList.add('hidden');
 
+      // dev — необязательный источник: если веток/файла ещё нет или сеть подвела,
+      // просто не показываем бейджи «в тесте», без ошибки на всю страницу.
+      let devStatusById: Record<string, string> = {};
+      try {
+        const devRes = await fetch(DEV_ROADMAP_URL, { cache: 'no-store' });
+        if (devRes.ok) {
+          const devData = await devRes.json();
+          (devData.tasks ?? []).forEach((t: any) => {
+            devStatusById[t.id] = t.status;
+          });
+        }
+      } catch (err) {
+        // тихо игнорируем — dev-статус необязателен для работы страницы
+      }
+
       const tasks: any[] = data.tasks ?? [];
       const milestones: Record<string, string[]> = data.milestones ?? {};
       const tracks: Record<string, string> = data.tracks ?? {};
@@ -525,7 +563,7 @@ import { Icon } from 'astro-icon/components';
           const listEl = section.querySelector('[data-phase-list]') as HTMLElement;
           const countEl = section.querySelector('[data-phase-count]') as HTMLElement;
           listEl.innerHTML = '';
-          filtered.forEach((task) => listEl.appendChild(buildCard(task, template)));
+          filtered.forEach((task) => listEl.appendChild(buildCard(task, template, devStatusById)));
 
           const doneCount = scopeTasks.filter((t) => t.status === 'done').length;
           countEl.textContent = `Показано ${filtered.length} из ${scopeTasks.length} · готово ${doneCount}`;
@@ -551,7 +589,7 @@ import { Icon } from 'astro-icon/components';
           backlogSection.classList.add('hidden');
         } else {
           backlogSection.classList.remove('hidden');
-          backlogTasks.forEach((task) => backlogListEl.appendChild(buildCard(task, template)));
+          backlogTasks.forEach((task) => backlogListEl.appendChild(buildCard(task, template, devStatusById)));
         }
         shownTotal += backlogTasks.length;
 
