@@ -14,86 +14,134 @@ const valueProps = [
 const painPoints = [
   {
     icon: 'heroicons:clock',
-    title: 'Заявки теряются',
-    text: 'Клиенты пишут в любое время суток, а ответ приходит с задержкой — часть из них просто уходит к конкурентам.',
+    title: 'Ответы приходят с задержкой',
+    text: 'Клиент пишет вечером или ночью, когда менеджер не на связи, и получает ответ только утром. За это время человек, готовый оставить заявку прямо сейчас, успевает написать в другое агентство — и уже там договориться. Каждый час задержки — это упущенная выручка, которую даже не всегда можно заметить: она просто не происходит.',
   },
   {
     icon: 'heroicons:squares-2x2',
     title: 'Каналы разрознены',
-    text: 'Instagram, директ, комментарии, сайт, мессенджеры — всё ведётся вручную и в разных местах.',
+    text: 'Директ, комментарии, сайт, WhatsApp, Telegram — если агентство присутствует во всех этих местах, следить приходится за всеми одновременно, вручную переключаясь между приложениями. Нет единой картины: сколько сейчас открытых диалогов и на что не успели ответить.',
   },
   {
     icon: 'heroicons:eye-slash',
-    title: 'Решения вслепую',
-    text: 'Непонятно, какой контент и какой канал реально приносят заявки, а какие — просто съедают время.',
+    title: 'Решения принимаются вслепую',
+    text: 'Владелец аккаунта интуитивно чувствует, что «вот этот тип постов заходит», но не может подтвердить это цифрами. Непонятно, какой контент, направление или формат реально приводит к заявке, а не просто собирает лайки — бюджет времени тратится не туда, где отдача выше.',
   },
 ];
 
-const productPoints = [
+const ideaPrinciples = [
   {
-    number: '01',
-    title: 'Консультация и заявка',
-    lead: 'Главная задача — не поговорить, а получить заявку.',
-    text: 'ИИ на базе Claude круглосуточно ведёт первичную консультацию с клиентом — в директе Instagram, в комментариях и в чате на сайте — и доводит разговор до структурированной заявки, которую сразу можно передать в работу менеджеру.',
-    bullets: [
-      'Собирает всё важное: направление, число людей (взрослые/дети), даты (можно примерные), ориентир по бюджету, контакт и особые пожелания.',
-      'Спрашивает недостающее по одному вопросу, без допроса — и сохраняет даже частичную заявку, если клиент ответил не на всё.',
-      'Никогда не называет финальные цены и не закрывает сделку сама — тур собирает и продаёт человек.',
-      'Каждая заявка попадает в раздел «Заявки» — мини-CRM со статусами (новая / в работе / закрыта) и источником обращения.',
-    ],
-    icon: 'heroicons:chat-bubble-left-right',
+    icon: 'heroicons:cpu-chip',
+    title: 'Один мозг — на все каналы',
+    text: 'Не отдельный бот для Instagram и отдельный чат-виджет для сайта с разной логикой, а единое ядро — сценарии общения, база знаний о турах, накопленные примеры хороших ответов, — которое просто подключается к разным точкам входа. Улучшая агента один раз, вы улучшаете его сразу везде.',
   },
   {
-    number: '02',
-    title: 'Продвижение и рост аккаунта',
-    lead: 'Первый поинт превращает трафик в заявки — второй наращивает сам трафик.',
-    text: 'Платформа копит аналитику по каждому каналу, а Claude превращает её в понятные выводы и приоритеты — что усиливать, а что менять.',
-    bullets: [
-      'Контент-план и черновики текстов для контент-календаря: темы, форматы (пост/Reels/сторис), дни и время публикации.',
-      'Аналитика по охвату, вовлечённости, сохранениям, аудитории и времени публикации — с историей и трендами, а не только текущими цифрами.',
-      'Подсвечивает узкие места: слабые форматы, неудачное время, спад охвата, разрыв между тем, что спрашивают в директе, и тем, что есть в контенте.',
-      'Рекомендует направление аккаунта — на что делать упор и куда двигаться — и связывает это с тем, какой контент реально приводит заявки.',
-    ],
-    icon: 'heroicons:arrow-trending-up',
+    icon: 'heroicons:circle-stack',
+    title: 'Одна база аналитики',
+    text: 'Не разрозненная статистика по каждому каналу, а одна база, в которую стекается всё: что происходит в Instagram, что происходит на сайте, какие заявки откуда пришли. Это даёт цельную картину пути клиента от первого касания до заявки.',
+  },
+  {
+    icon: 'heroicons:hand-raised',
+    title: 'Финальное слово — за человеком',
+    text: 'Платформа не заменяет турагента, а снимает с него рутину и даёт данные для решений. Цена, детали тура и закрытие сделки всегда остаются за человеком.',
   },
 ];
 
-const capabilityGroups = [
+const point1Fields = [
+  { label: 'Направление', text: 'куда именно хочет клиент (или несколько вариантов, если ещё выбирает)' },
+  { label: 'Количество человек', text: 'сколько взрослых, есть ли дети и какого возраста' },
+  { label: 'Даты поездки', text: 'точные, если клиент их знает, или примерные — «вторая половина августа»' },
+  { label: 'Бюджет', text: 'ориентир, если клиент готов его назвать' },
+  { label: 'Контакт', text: 'как связаться, если разговор идёт не там, где можно ответить напрямую' },
+  { label: 'Пожелания', text: 'питание, звёздность отеля, город вылета, особые условия' },
+];
+
+const point1Flow = [
+  'ИИ проводит первичную консультацию и собирает заявку',
+  'менеджер связывается с клиентом',
+  'менеджер собирает тур и называет цену',
+  'происходит продажа',
+];
+
+const point2Highlights = [
   {
-    title: 'Instagram',
-    icon: 'heroicons:camera',
-    items: [
-      'Отвечает на комментарии по сценариям и переводит диалог в директ',
-      'Отвечает в личных сообщениях (директ) по сценариям',
-      'Собирает аналитику аккаунта и по каждой публикации',
-      'Публикует посты, Reels и сторис, в том числе отложенно',
-      'Строит контент-план и пишет черновики текстов',
-    ],
+    title: 'Контент-планы',
+    text: 'Готовый план на неделю — темы под сезон и спрос, форматы (пост/Reels/сторис), конкретные дни и время выхода, с черновиком текста и подписи к каждому пункту.',
   },
   {
-    title: 'Сайт',
+    title: 'Аналитика',
+    text: 'Охваты, вовлечённость, сохранения, динамика подписчиков, аудитория по возрасту и городам, поведение в сторис — и еженедельный (или по запросу) понятный разбор: что сработало, а что нет, и с какими числами это связано.',
+  },
+  {
+    title: 'Подсветка узких мест',
+    text: 'Где именно «протекает» воронка: слабый формат, неудачное время публикации, или разрыв между тем, что люди спрашивают в директе и заявках, и тем, что представлено в контенте.',
+  },
+  {
+    title: 'Направление аккаунта',
+    text: 'Не «сделай пост про Турцию», а стратегическая рекомендация — куда сместить фокус контента и, возможно, ассортимент туров, основываясь на вовлечённости и реальных заявках.',
+  },
+];
+
+const loopSteps = ['Контент', 'Интерес', 'Диалог', 'Заявка', 'Данные', 'Более точный контент'];
+
+const platformLayers = [
+  {
+    icon: 'heroicons:signal',
+    title: 'Каналы',
+    text: 'Точки, где происходит живое взаимодействие с клиентами: сейчас — Instagram (директ, комментарии, публикации) и сайт (каталог, формы, чат). В перспективе — Telegram, WhatsApp, Messenger, возможно TikTok, по мере технической доступности их API.',
+  },
+  {
+    icon: 'heroicons:server',
+    title: 'Платформа',
+    text: 'Связующий слой — панель управления и всё, что происходит «под капотом»: куда стекаются данные из каналов, где настраиваются сценарии, где видно все диалоги и заявки в одном месте, где строятся графики.',
+  },
+  {
+    icon: 'heroicons:cpu-chip',
+    title: 'AI-слой',
+    text: 'Интеллект платформы — единое ядро агента, которое разговаривает с клиентами (быстрая, недорогая модель) и анализирует данные (более вдумчивая модель там, где нужен нюанс). Агент не выдумывает цены и детали, которых нет в базе знаний — либо уточняет у клиента, либо передаёт диалог человеку.',
+  },
+];
+
+const modules = [
+  {
+    title: 'Подключения',
+    icon: 'heroicons:link',
+    text: 'Единая точка входа для привязки каналов. Instagram подключается через официальный, безопасный вход — без ввода паролей напрямую в платформу, по стандартному защищённому протоколу. Платформа сама следит за сроком действия доступа и продлевает его без участия человека, показывая понятный статус: подключено / требует внимания.',
+  },
+  {
+    title: 'Сценарии и агент',
+    icon: 'heroicons:academic-cap',
+    text: 'Здесь настраивается «личность» и знания агента — без программирования, тремя инструментами: сценарии и тон (как агент разговаривает, какой у него стиль), база знаний (каталог направлений, условия, частые вопросы — чтобы агент отвечал по реальным материалам, а не выдумывал) и примеры хороших диалогов. Дальше — живой процесс: смотришь на реальные диалоги, отмечаешь удачные и неудачные ответы, и агент со временем всё точнее попадает в нужный тон и содержание.',
+  },
+  {
+    title: 'Инбокс и заявки — сердце продукта',
+    icon: 'heroicons:inbox',
+    text: 'Модуль, где физически происходит поинт 1. Все входящие диалоги — из директа, комментариев, чата на сайте — стекаются в единый список, где видно, кто пишет, о чём разговор и что уже удалось выяснить. По мере сбора данных формируется карточка заявки: направление, число людей, даты, бюджет, контакт, пожелания — с пометкой источника и полноты. Отдельный раздел «Заявки» работает как облегчённая CRM: статусы (новая / в работе / закрыта), фильтрация по источнику, уведомление менеджеру. Это то, на что владелец агентства будет смотреть чаще всего — здесь виден прямой результат в деньгах, а не в лайках.',
+  },
+  {
+    title: 'Аналитика и продвижение аккаунта',
+    icon: 'heroicons:chart-bar',
+    text: 'Здесь живёт поинт 2. Платформа накапливает историю по ключевым метрикам — не только текущий снимок, а динамику во времени, потому что тренды важнее моментальных цифр. Поверх графиков — регулярный и по запросу разбор от AI: что изменилось, что сработало, что просело и что с этим делать. Отдельно — узкие места и рекомендованное направление развития аккаунта.',
+  },
+  {
+    title: 'Контент',
+    icon: 'heroicons:photo',
+    text: 'Публикация постов, каруселей, Reels и сторис прямо из панели, планирование заранее (дата и время — платформа опубликует сама), весь план в виде календаря, который можно двигать и редактировать. Плюс AI-генератор контент-плана с учётом того, что реально сработало по данным аналитики.',
+  },
+  {
+    title: 'Сайт и чат-бот',
     icon: 'heroicons:globe-alt',
-    items: [
-      'Каталог туров и направлений, лид-формы, кнопки мессенджеров',
-      'Веб-аналитика посещений и источников трафика',
-      'Чат-ассистент на том же ядре агента — отвечает про туры и собирает заявки',
-    ],
+    text: 'Сайт турагентства — второй полноценный канал, не «довесок» к Instagram. Современный, быстрый сайт с каталогом направлений и туров, формами заявки и кнопками мессенджеров. На сайте работает то же ядро агента, только в формате встроенного чат-виджета — оно доводит посетителей до той же структурированной заявки в общем разделе. Плюс веб-аналитика, показывающая, откуда приходят люди — в том числе с каких постов и сторис в Instagram.',
   },
   {
-    title: 'Сквозной слой',
-    icon: 'heroicons:arrows-right-left',
-    items: [
-      'Единая воронка Instagram → сайт → заявка',
-      'AI-разбор всех данных с конкретными рекомендациями по контенту и продвижению',
-    ],
+    title: 'Реклама — поздний, но логичный шаг',
+    icon: 'heroicons:megaphone',
+    text: 'Когда органическое продвижение и заявки уже отлажены, можно подключить управление платной рекламой — с той же аналитикой и AI-разбором эффективности, но с обязательными защитами: любое действие с бюджетом подтверждает человек, есть жёсткие лимиты и полная история действий. Осознанно поздний модуль — требует более серьёзной проверки и подтверждения юрлица, и имеет смысл, только когда есть на что опираться.',
   },
   {
-    title: 'Позже',
-    icon: 'heroicons:clock',
-    items: [
-      'Управление рекламой в Instagram и Facebook',
-      'Telegram, Messenger, WhatsApp, TikTok — по мере доступности их API',
-    ],
+    title: 'Развитие: другие соцсети',
+    icon: 'heroicons:rocket-launch',
+    text: 'Instagram — не единственный канал навсегда. Как только появляется официальный и стабильный API, можно подключить Telegram, Messenger, WhatsApp или другие площадки — тем же способом: новый канал встраивается в уже существующее ядро агента и общую аналитику, а не запускается с нуля.',
   },
 ];
 
@@ -130,6 +178,34 @@ const reviewFacts = [
       'Пока приложение в режиме разработки, всё тестируется на ограниченном числе аккаунтов (до ~25), которые явно приняли приглашение.',
       'После одобрения включается webhook (события в реальном времени) — до этого платформа сама регулярно опрашивает Instagram.',
     ],
+  },
+];
+
+const outcomes = [
+  {
+    icon: 'heroicons:clock',
+    title: 'Ответ сразу, в любое время',
+    text: 'Ночная заявка не ждёт до утра — консультация и сбор данных происходят немедленно, а менеджер подключается уже к тёплому, квалифицированному контакту.',
+  },
+  {
+    icon: 'heroicons:squares-2x2',
+    title: 'Все каналы — в одном окне',
+    text: 'Не нужно проверять пять приложений, чтобы понять, есть ли новые обращения — всё видно в одном месте, с пометкой источника.',
+  },
+  {
+    icon: 'heroicons:chart-bar',
+    title: 'Решения на данных, а не на интуиции',
+    text: 'Понятно, какой контент и какое направление реально приводят к заявкам, а не просто собирают внимание.',
+  },
+  {
+    icon: 'heroicons:user-group',
+    title: 'Рост без расширения команды',
+    text: 'Рутинная часть консультации и вся аналитика автоматизированы — люди в команде занимаются тем, что действительно требует их участия: подбором тура и продажей.',
+  },
+  {
+    icon: 'heroicons:rocket-launch',
+    title: 'Платформа растёт вместе с бизнесом',
+    text: 'Начинается с одного аккаунта и сайта, но устроена так, что новые каналы и даже платное продвижение подключаются как модули к уже работающей системе, а не требуют начинать заново.',
   },
 ];
 ---
@@ -192,6 +268,11 @@ const reviewFacts = [
       <h2 class="font-display text-2xl text-foreground sm:text-3xl">
         Проблема, которую мы решаем
       </h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">
+        У турагентства сегодня клиенты приходят из разных мест — директ Instagram,
+        комментарии под постом, сайт с чатом или формой. Все эти касания живут отдельно
+        друг от друга и обрабатываются вручную. Это создаёт три конкретные проблемы.
+      </p>
       <div class="mt-8 grid gap-6 sm:grid-cols-3">
         {
           painPoints.map((point) => (
@@ -206,77 +287,260 @@ const reviewFacts = [
     </div>
   </section>
 
-  <!-- Two product points -->
+  <!-- Idea -->
   <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-    <h2 class="font-display text-2xl text-foreground sm:text-3xl">Как платформа это решает</h2>
+    <h2 class="font-display text-2xl text-foreground sm:text-3xl">
+      Идея: единый AI-центр для сайта и соцсетей
+    </h2>
     <p class="mt-3 max-w-2xl text-muted-foreground">
-      В основе — два поинта продукта. Они усиливают друг друга: рост аккаунта даёт больше
-      диалогов и больше заявок, а данные о заявках показывают, какой контент реально
-      приводит клиентов.
+      Ответ на эти три проблемы — не «ещё один инструмент для ещё одного канала», а
+      платформа, которая связывает все каналы турагентства в одном окне и добавляет туда
+      искусственный интеллект, который реально разговаривает с клиентами и реально
+      разбирает данные. Платформа строится вокруг трёх простых принципов.
     </p>
-    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+    <div class="mt-8 grid gap-6 sm:grid-cols-3">
       {
-        productPoints.map((point) => (
-          <div class="rounded-lg border border-border bg-card p-8 shadow-card">
-            <div class="flex items-center gap-3">
-              <span
-                class="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-primary-foreground"
-                aria-hidden="true"
-              >
-                <Icon name={point.icon} class="h-5 w-5" />
-              </span>
-              <span class="font-mono text-sm text-muted-foreground">{point.number}</span>
-            </div>
-            <h3 class="mt-3 font-display text-xl text-foreground">{point.title}</h3>
-            <p class="mt-1 font-medium text-accent">{point.lead}</p>
-            <p class="mt-3 leading-relaxed text-muted-foreground">{point.text}</p>
-            <ul class="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
-              {point.bullets.map((bullet) => (
-                <li class="flex gap-2">
-                  <Icon
-                    name="heroicons:check-circle"
-                    class="mt-1 h-4 w-4 shrink-0 text-accent"
-                    aria-hidden="true"
-                  />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
+        ideaPrinciples.map((principle) => (
+          <div class="rounded-lg border border-border bg-card p-6 shadow-card">
+            <span
+              class="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-primary-foreground"
+              aria-hidden="true"
+            >
+              <Icon name={principle.icon} class="h-5 w-5" />
+            </span>
+            <h3 class="mt-3 font-semibold text-foreground">{principle.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{principle.text}</p>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- Concrete capability list -->
+  <!-- Two product points -->
   <section class="border-y border-border bg-card">
-    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <h2 class="font-display text-2xl text-foreground sm:text-3xl">Два поинта платформы</h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">
+        Всё, что делает платформа, служит двум задачам — это ядро всей концепции.
+      </p>
+
+      <!-- Point 01 -->
+      <div class="mt-8 rounded-lg border border-border bg-background p-8 shadow-card">
+        <div class="flex items-center gap-3">
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-primary-foreground"
+            aria-hidden="true"
+          >
+            <Icon name="heroicons:chat-bubble-left-right" class="h-5 w-5" />
+          </span>
+          <span class="font-mono text-sm text-muted-foreground">01</span>
+        </div>
+        <h3 class="mt-3 font-display text-xl text-foreground">Консультация и заявка</h3>
+        <p class="mt-1 font-medium text-accent">Это главная, измеримая цель платформы.</p>
+        <p class="mt-3 leading-relaxed text-muted-foreground">
+          Не «вести красивый аккаунт» и не «отвечать на сообщения ради вежливости» — а
+          доводить разговор до заявки, которую турагент сможет обработать и превратить в
+          продажу.
+        </p>
+
+        <blockquote class="mt-4 rounded-md border-l-4 border-accent bg-muted p-4">
+          <p class="italic text-foreground">«Хочу куда-нибудь на море в августе, нас трое»</p>
+          <p class="mt-1 text-sm text-muted-foreground">
+            С этого может начаться разговор в директе — а закончиться он готовой заявкой с
+            датами, бюджетом и контактом.
+          </p>
+        </blockquote>
+
+        <p class="mt-4 leading-relaxed text-muted-foreground">
+          AI-агент включается в разговор и ведёт себя как живой консультант: уточняет
+          детали, отвечает на вопросы о направлениях, помогает определиться, если человек
+          сомневается между вариантами. На фоне агент собирает то, из чего потом можно
+          собрать тур:
+        </p>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+          {
+            point1Fields.map((field) => (
+              <div class="rounded-sm border border-border bg-card px-3 py-2">
+                <dt class="text-sm font-semibold text-foreground">{field.label}</dt>
+                <dd class="text-sm text-muted-foreground">{field.text}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <p class="mt-4 leading-relaxed text-muted-foreground">
+          Агент не превращает разговор в анкету — он спрашивает то, чего не хватает,
+          естественно, по ходу разговора, так же как это сделал бы живой менеджер. Если
+          клиент не готов ответить сразу или обрывает диалог, заявка всё равно сохраняется
+          в том виде, в каком есть: лучше неполная заявка, чем полностью потерянный
+          контакт.
+        </p>
+
+        <div class="mt-4 flex gap-3 rounded-md border border-accent/30 bg-accent/5 p-4">
+          <Icon
+            name="heroicons:shield-exclamation"
+            class="mt-1 h-5 w-5 shrink-0 text-accent"
+            aria-hidden="true"
+          />
+          <p class="text-sm leading-relaxed text-foreground">
+            <strong>
+              AI-агент никогда не называет финальные цены и не закрывает сделку сам.
+            </strong>{' '}
+            Цены на туры зависят от множества переменных — сезонности, наличия мест,
+            курсов валют, спецпредложений, — которые меняются быстрее любой базы знаний, и
+            ошибка здесь стоит агентству денег и доверия клиента. Агент делает то, что
+            делает хороший администратор в приёмной: встречает, выслушивает, квалифицирует
+            и передаёт специалисту.
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-2 text-sm">
+          {
+            point1Flow.map((step, i) => (
+              <>
+                <span class="rounded-sm bg-muted px-3 py-1.5 font-medium text-foreground">
+                  {step}
+                </span>
+                {i < point1Flow.length - 1 && (
+                  <Icon
+                    name="heroicons:arrow-right"
+                    class="h-4 w-4 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                )}
+              </>
+            ))
+          }
+        </div>
+
+        <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+          Это работает одинаково в любом канале: комментарий под постом переводится в
+          директ, а чат на сайте работает по той же логике — с тем же результатом.
+        </p>
+      </div>
+
+      <!-- Point 02 -->
+      <div class="mt-6 rounded-lg border border-border bg-background p-8 shadow-card">
+        <div class="flex items-center gap-3">
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-primary-foreground"
+            aria-hidden="true"
+          >
+            <Icon name="heroicons:arrow-trending-up" class="h-5 w-5" />
+          </span>
+          <span class="font-mono text-sm text-muted-foreground">02</span>
+        </div>
+        <h3 class="mt-3 font-display text-xl text-foreground">Продвижение и рост аккаунта</h3>
+        <p class="mt-1 font-medium text-accent">
+          Если первый поинт превращает уже существующий интерес в заявки, второй работает
+          на то, чтобы этого интереса становилось больше.
+        </p>
+        <p class="mt-3 leading-relaxed text-muted-foreground">
+          Здесь платформа выступает не как консультант, а как AI-стратег по продвижению,
+          который постоянно следит за аккаунтом и подсказывает, что делать дальше.
+        </p>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          {
+            point2Highlights.map((item) => (
+              <div class="rounded-sm border border-border bg-card p-4">
+                <h4 class="font-semibold text-foreground">{item.title}</h4>
+                <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+          Здесь же — задел на будущее: тексты для рекламных объявлений и разбор
+          эффективности платного продвижения вместе с органикой, когда до этого дойдёт
+          очередь.
+        </p>
+      </div>
+
+      <!-- Loop -->
+      <div class="mt-6 rounded-lg border border-dashed border-accent/40 bg-accent/5 p-6">
+        <p class="text-sm leading-relaxed text-muted-foreground">
+          Это не два отдельных модуля — они работают в связке. Продвижение приводит больше
+          людей в диалоги — больше диалогов означает больше заявок. А данные о том, какие
+          заявки приходят, подсказывают, какой контент продвигать сильнее. Замкнутый цикл
+          роста:
+        </p>
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
+          {
+            loopSteps.map((step, i) => (
+              <>
+                <span class="rounded-sm bg-card px-3 py-1.5 font-medium text-foreground shadow-card">
+                  {step}
+                </span>
+                {i < loopSteps.length - 1 && (
+                  <Icon
+                    name="heroicons:arrow-right"
+                    class="h-4 w-4 shrink-0 text-accent"
+                    aria-hidden="true"
+                  />
+                )}
+              </>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three layers -->
+  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <h2 class="font-display text-2xl text-foreground sm:text-3xl">
+      Как устроена платформа: три уровня
+    </h2>
+    <p class="mt-3 max-w-2xl text-muted-foreground">
+      Удобно смотреть на продукт как на три слоя, один поверх другого.
+    </p>
+    <div class="mt-8 grid gap-6 sm:grid-cols-3">
+      {
+        platformLayers.map((layer) => (
+          <div class="rounded-md border border-border bg-card p-6 shadow-card">
+            <Icon name={layer.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
+            <h3 class="mt-3 font-semibold text-foreground">{layer.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{layer.text}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+      Три слоя вместе создают систему, где новый канал добавляется как модуль поверх уже
+      существующей платформы и ядра агента — а не как отдельный проект с нуля.
+    </p>
+  </section>
+
+  <!-- Modules — deep dive -->
+  <section class="border-y border-border bg-muted/40">
+    <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
       <h2 class="font-display text-2xl text-foreground sm:text-3xl">
-        Что конкретно умеет платформа
+        Модули платформы — подробно
       </h2>
       <p class="mt-3 max-w-2xl text-muted-foreground">
-        Полный список того, что делает платформа уже сегодня и что добавится по мере
-        роста — без общих слов.
+        Что конкретно находится внутри каждого раздела панели управления.
       </p>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-8 space-y-3">
         {
-          capabilityGroups.map((group) => (
-            <div class="rounded-md border border-border bg-background p-6">
-              <Icon name={group.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
-              <h3 class="mt-3 font-semibold text-foreground">{group.title}</h3>
-              <ul class="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-                {group.items.map((item) => (
-                  <li class="flex gap-2">
-                    <Icon
-                      name="heroicons:check"
-                      class="mt-1 h-4 w-4 shrink-0 text-accent"
-                      aria-hidden="true"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          modules.map((module) => (
+            <details class="group rounded-md border border-border bg-card open:shadow-card">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-3 px-6 py-3 font-semibold text-foreground"
+              >
+                <span class="flex items-center gap-3">
+                  <Icon name={module.icon} class="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
+                  {module.title}
+                </span>
+                <Icon
+                  name="heroicons:chevron-down"
+                  class="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <p class="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
+                {module.text}
+              </p>
+            </details>
           ))
         }
       </div>
@@ -284,74 +548,92 @@ const reviewFacts = [
   </section>
 
   <!-- How it's built: tracks -->
-  <section class="border-y border-border bg-muted/40">
-    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <h2 class="font-display text-2xl text-foreground sm:text-3xl">Как устроен запуск</h2>
-      <p class="mt-3 max-w-2xl text-muted-foreground">
-        Разработка идёт в два трека — часть возможностей заказчик получает уже в первые
-        недели, часть подключается позже, после проверки со стороны Meta.
-      </p>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+  <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <h2 class="font-display text-2xl text-foreground sm:text-3xl">Как устроен запуск</h2>
+    <p class="mt-3 max-w-2xl text-muted-foreground">
+      Разработка идёт в два трека — часть возможностей заказчик получает уже в первые
+      недели, часть подключается позже, после проверки со стороны Meta.
+    </p>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2">
+      {
+        tracks.map((track) => (
+          <div class="rounded-md border border-border bg-card p-6 shadow-card">
+            <Icon name={track.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
+            <h3 class="mt-3 font-semibold text-foreground">{track.label}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{track.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Meta review nuance — progressive disclosure -->
+  <section class="border-y border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <div class="flex items-start gap-3">
+        <Icon
+          name="heroicons:shield-exclamation"
+          class="mt-1 h-6 w-6 shrink-0 text-accent"
+          aria-hidden="true"
+        />
+        <div>
+          <h2 class="font-display text-2xl text-foreground sm:text-3xl">
+            Нюанс, о котором честно стоит знать: проверка Meta
+          </h2>
+          <p class="mt-3 max-w-2xl text-muted-foreground">
+            Директ, публикации и реклама в Instagram не включаются по щелчку — Meta требует
+            пройти App Review. Ниже — подробности для тех, кому важно понимать процесс
+            целиком; для повседневной работы с платформой это не обязательно читать.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 space-y-3">
         {
-          tracks.map((track) => (
-            <div class="rounded-md border border-border bg-card p-6">
-              <Icon name={track.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
-              <h3 class="mt-3 font-semibold text-foreground">{track.label}</h3>
-              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{track.text}</p>
-            </div>
+          reviewFacts.map((block) => (
+            <details class="group rounded-md border border-border bg-background open:shadow-card">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-3 px-6 py-3 font-semibold text-foreground"
+              >
+                {block.title}
+                <Icon
+                  name="heroicons:chevron-down"
+                  class="h-5 w-5 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <ul class="space-y-1 px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
+                {block.items.map((item) => (
+                  <li class="flex gap-3">
+                    <Icon
+                      name="heroicons:check-circle"
+                      class="mt-1 h-4 w-4 shrink-0 text-accent"
+                      aria-hidden="true"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
           ))
         }
       </div>
     </div>
   </section>
 
-  <!-- Meta review nuance — progressive disclosure -->
+  <!-- Outcomes -->
   <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-    <div class="flex items-start gap-3">
-      <Icon
-        name="heroicons:shield-exclamation"
-        class="mt-1 h-6 w-6 shrink-0 text-accent"
-        aria-hidden="true"
-      />
-      <div>
-        <h2 class="font-display text-2xl text-foreground sm:text-3xl">
-          Нюанс, о котором честно стоит знать: проверка Meta
-        </h2>
-        <p class="mt-3 max-w-2xl text-muted-foreground">
-          Директ, публикации и реклама в Instagram не включаются по щелчку — Meta требует
-          пройти App Review. Ниже — подробности для тех, кому важно понимать процесс
-          целиком; для повседневной работы с платформой это не обязательно читать.
-        </p>
-      </div>
-    </div>
-
-    <div class="mt-6 space-y-3">
+    <h2 class="font-display text-2xl text-foreground sm:text-3xl">
+      Что это даёт заказчику — итог
+    </h2>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
-        reviewFacts.map((block) => (
-          <details class="group rounded-md border border-border bg-card open:shadow-card">
-            <summary
-              class="flex cursor-pointer list-none items-center justify-between gap-3 px-6 py-3 font-semibold text-foreground"
-            >
-              {block.title}
-              <Icon
-                name="heroicons:chevron-down"
-                class="h-5 w-5 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
-                aria-hidden="true"
-              />
-            </summary>
-            <ul class="space-y-1 px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
-              {block.items.map((item) => (
-                <li class="flex gap-3">
-                  <Icon
-                    name="heroicons:check-circle"
-                    class="mt-1 h-4 w-4 shrink-0 text-accent"
-                    aria-hidden="true"
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </details>
+        outcomes.map((outcome) => (
+          <div class="rounded-md border border-border bg-card p-6 shadow-card">
+            <Icon name={outcome.icon} class="h-6 w-6 text-accent" aria-hidden="true" />
+            <h3 class="mt-3 font-semibold text-foreground">{outcome.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{outcome.text}</p>
+          </div>
         ))
       }
     </div>
