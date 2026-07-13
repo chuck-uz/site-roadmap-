@@ -1,0 +1,50 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div class="w-full max-w-sm rounded-lg border border-border bg-card p-4 shadow-card-hover" aria-hidden="true">
+  <div class="flex items-center justify-between border-b border-border pb-3">
+    <span class="text-xs font-medium text-muted-foreground">Аналитика аккаунта · 7 дней</span>
+    <Icon name="heroicons:chart-bar" class="h-4 w-4 text-muted-foreground" />
+  </div>
+
+  <div class="mt-3">
+    <div class="flex items-baseline justify-between">
+      <span class="text-2xl font-semibold text-foreground">+18%</span>
+      <span class="text-xs font-medium text-accent">охват ↑</span>
+    </div>
+    <svg viewBox="0 0 200 56" class="mt-2 h-14 w-full" preserveAspectRatio="none">
+      <polyline
+        points="0,44 30,40 60,42 90,28 120,32 150,14 180,18 200,8"
+        fill="none"
+        stroke="var(--color-accent)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <polygon
+        points="0,44 30,40 60,42 90,28 120,32 150,14 180,18 200,8 200,56 0,56"
+        fill="var(--color-accent)"
+        opacity="0.12"
+      />
+    </svg>
+  </div>
+
+  <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+    <div class="rounded-sm bg-muted px-2 py-1.5">
+      <p class="text-sm font-semibold text-foreground">12</p>
+      <p class="text-xs text-muted-foreground">заявок</p>
+    </div>
+    <div class="rounded-sm bg-muted px-2 py-1.5">
+      <p class="text-sm font-semibold text-foreground">6.4%</p>
+      <p class="text-xs text-muted-foreground">вовлечённость</p>
+    </div>
+  </div>
+
+  <div class="mt-3 flex gap-2 rounded-md border border-accent/30 bg-accent/5 p-2.5">
+    <Icon name="heroicons:light-bulb" class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+    <p class="text-xs leading-relaxed text-foreground">
+      <strong>Узкое место:</strong> Reels по выходным — охват на 30% ниже среднего
+    </p>
+  </div>
+</div>

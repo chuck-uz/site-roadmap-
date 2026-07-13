@@ -1,24 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Colors — премиальный тёплый минимализм: стоун + золото, без "туристического" sky-blue */
-  --color-primary: #1c1917;
+  /* Colors — светлый профессиональный SaaS: нейтральный серый + зелёный акцент */
+  --color-primary: #18181b;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #44403c;
+  --color-secondary: #3f3f46;
   --color-secondary-foreground: #ffffff;
-  --color-accent: #a16207;
+  --color-accent: #059669;
   --color-accent-foreground: #ffffff;
-  --color-background: #faf9f7;
-  --color-foreground: #0c0a09;
+  --color-background: #fafafa;
+  --color-foreground: #18181b;
   --color-card: #ffffff;
-  --color-card-foreground: #0c0a09;
-  --color-muted: #f2f0ed;
-  --color-muted-foreground: #78716c;
-  --color-border: #e2ded9;
+  --color-card-foreground: #18181b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-border: #e4e4e7;
   --color-destructive: #dc2626;
   --color-destructive-foreground: #ffffff;
-  --color-ring: #1c1917;
+  --color-ring: #18181b;
 
   /* Статусы задач — не только цвет, всегда дублируются иконкой/текстом */
   --color-status-todo-bg: #f2f0ed;
@@ -30,8 +30,9 @@
   --color-status-done-bg: #dcfce7;
   --color-status-done-fg: #15803d;
 
-  /* Typography */
-  --font-display: 'Calistoga', Georgia, serif;
+  /* Typography — Space Grotesk для заголовков, Calistoga только точечным акцентом */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-accent: 'Calistoga', Georgia, serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
@@ -47,8 +48,9 @@
   --radius-lg: 16px;
 
   /* Shadows — мягкие, минималистичные */
-  --shadow-card: 0 1px 2px rgba(28, 25, 23, 0.04), 0 4px 12px rgba(28, 25, 23, 0.06);
-  --shadow-card-hover: 0 2px 4px rgba(28, 25, 23, 0.06), 0 8px 24px rgba(28, 25, 23, 0.1);
+  --shadow-card: 0 1px 2px rgba(24, 24, 27, 0.04), 0 4px 12px rgba(24, 24, 27, 0.06);
+  --shadow-card-hover: 0 2px 4px rgba(24, 24, 27, 0.06), 0 8px 24px rgba(24, 24, 27, 0.1);
+  --shadow-nav: 0 1px 2px rgba(24, 24, 27, 0.04), 0 8px 24px rgba(24, 24, 27, 0.08);
 }
 
 @media (prefers-reduced-motion: reduce) {
