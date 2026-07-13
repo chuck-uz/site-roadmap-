@@ -1,0 +1,413 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout
+  title="Дорожная карта — платформа продвижения турагентства"
+  description="Интерактивный план разработки: задачи, зависимости, критерии готовности и текущий статус."
+>
+  <SiteHeader slot="header" />
+
+  <section class="mx-auto max-w-6xl px-4 pb-2xl pt-lg sm:px-6">
+    <h1 class="font-display text-3xl text-foreground sm:text-4xl">Дорожная карта</h1>
+    <p class="mt-2xs max-w-2xl text-muted-foreground">
+      Данные загружаются напрямую из репозитория разработки, поэтому статус здесь всегда
+      совпадает с актуальным планом.
+    </p>
+
+    <!-- Progress -->
+    <div class="mt-md rounded-lg border border-border bg-card p-sm shadow-card">
+      <div class="flex flex-wrap items-center justify-between gap-2xs">
+        <p class="font-semibold text-foreground" id="progress-label">Прогресс</p>
+        <p class="text-sm text-muted-foreground" id="progress-fraction"></p>
+      </div>
+      <div
+        class="mt-2xs h-3 w-full overflow-hidden rounded-sm bg-muted"
+        role="progressbar"
+        aria-labelledby="progress-label"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        id="progress-track"
+      >
+        <div
+          id="progress-fill"
+          class="h-full rounded-sm bg-accent transition-[width] duration-300 ease-out"
+          style="width: 0%"
+        >
+        </div>
+      </div>
+      <div class="mt-2xs flex flex-wrap gap-xs text-xs text-muted-foreground" id="progress-breakdown">
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div
+      class="mt-md flex flex-wrap items-end gap-sm rounded-lg border border-border bg-card p-sm shadow-card"
+      role="group"
+      aria-label="Фильтры и сортировка дорожной карты"
+    >
+      <label class="flex flex-col gap-4xs text-sm">
+        <span class="font-medium text-foreground">Веха</span>
+        <select
+          id="filter-milestone"
+          class="min-w-[12rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+        >
+          <option value="all">Все вехи</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-4xs text-sm">
+        <span class="font-medium text-foreground">Трек</span>
+        <select
+          id="filter-track"
+          class="min-w-[12rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+        >
+          <option value="all">Все треки</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-4xs text-sm">
+        <span class="font-medium text-foreground">Статус</span>
+        <select
+          id="filter-status"
+          class="min-w-[10rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+        >
+          <option value="all">Любой статус</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-4xs text-sm">
+        <span class="font-medium text-foreground">Сортировка</span>
+        <select
+          id="sort-order"
+          class="min-w-[14rem] rounded-sm border border-border bg-background px-2xs py-4xs text-sm text-foreground cursor-pointer"
+        >
+          <option value="asc">По сложности: сначала простые</option>
+          <option value="desc">По сложности: сначала сложные</option>
+        </select>
+      </label>
+      <p class="text-sm text-muted-foreground" id="results-count"></p>
+    </div>
+
+    <!-- Loading -->
+    <div id="state-loading" class="mt-md space-y-2xs" aria-live="polite">
+      {
+        Array.from({ length: 4 }).map(() => (
+          <div class="h-24 animate-pulse rounded-lg border border-border bg-card" />
+        ))
+      }
+    </div>
+
+    <!-- Error -->
+    <div
+      id="state-error"
+      class="mt-md hidden rounded-lg border border-destructive/30 bg-destructive/5 p-sm text-sm text-foreground"
+      role="alert"
+    >
+      <p class="font-semibold">Не удалось загрузить дорожную карту.</p>
+      <p class="mt-4xs text-muted-foreground">
+        Проверьте соединение с интернетом и попробуйте ещё раз.
+      </p>
+      <button
+        id="retry-button"
+        type="button"
+        class="mt-2xs inline-flex items-center gap-4xs rounded-sm bg-primary px-xs py-2xs text-sm font-semibold text-primary-foreground cursor-pointer"
+      >
+        <Icon name="heroicons:arrow-path" class="h-4 w-4" aria-hidden="true" />
+        Повторить
+      </button>
+    </div>
+
+    <!-- Empty -->
+    <div
+      id="state-empty"
+      class="mt-md hidden rounded-lg border border-border bg-card p-sm text-sm text-muted-foreground"
+    >
+      По выбранным фильтрам задач не найдено. Попробуйте изменить веху, трек или статус.
+    </div>
+
+    <!-- List -->
+    <div id="task-list" class="mt-md grid gap-2xs" aria-live="polite"></div>
+  </section>
+
+  <SiteFooter slot="footer" />
+
+  <!-- Icon bank: pre-rendered at build time, cloned into cards at runtime -->
+  <div class="hidden" aria-hidden="true">
+    <span data-icon-for="todo"><Icon name="heroicons:ellipsis-horizontal-circle" /></span>
+    <span data-icon-for="in_progress"><Icon name="heroicons:arrow-path" /></span>
+    <span data-icon-for="blocked"><Icon name="heroicons:lock-closed" /></span>
+    <span data-icon-for="done"><Icon name="heroicons:check-circle" /></span>
+    <span data-icon-for="review"><Icon name="heroicons:shield-exclamation" /></span>
+    <span data-icon-for="dot-filled"><Icon name="heroicons:star-solid" /></span>
+    <span data-icon-for="dot-empty"><Icon name="heroicons:star" /></span>
+  </div>
+
+  <template id="task-card-template">
+    <article
+      class="task-card rounded-lg border border-border bg-card p-sm shadow-card transition-shadow duration-200 hover:shadow-card-hover"
+    >
+      <div class="flex flex-wrap items-start justify-between gap-2xs">
+        <div class="flex items-center gap-2xs">
+          <span
+            class="task-id inline-flex items-center rounded-sm bg-muted px-2xs py-4xs font-mono text-xs font-semibold text-muted-foreground"
+          ></span>
+          <h3 class="task-title font-display text-lg text-foreground"></h3>
+        </div>
+        <span
+          class="status-badge inline-flex items-center gap-4xs rounded-sm px-2xs py-4xs text-xs font-semibold"
+          data-status=""
+        >
+          <span class="status-icon-slot inline-flex h-3.5 w-3.5 [&_svg]:h-3.5 [&_svg]:w-3.5"></span>
+          <span class="status-label"></span>
+        </span>
+      </div>
+
+      <div class="mt-2xs flex flex-wrap items-center gap-2xs text-xs text-muted-foreground">
+        <span class="track-chip inline-flex items-center rounded-sm border border-border px-2xs py-4xs"
+        ></span>
+        <span
+          class="difficulty-badge inline-flex items-center gap-4xs"
+        >
+          <span class="dots inline-flex gap-[2px] [&_svg]:h-3 [&_svg]:w-3"></span>
+          <span class="difficulty-text font-medium"></span>
+        </span>
+        <span
+          class="review-badge hidden inline-flex items-center gap-4xs rounded-sm bg-status-in_progress-bg px-2xs py-4xs font-semibold text-status-in_progress-fg [&_svg]:h-3.5 [&_svg]:w-3.5"
+        ></span>
+      </div>
+
+      <p class="deps-line mt-2xs hidden text-xs text-muted-foreground">
+        Зависит от: <span class="deps-list font-mono"></span>
+      </p>
+
+      <details class="details-block mt-2xs">
+        <summary class="cursor-pointer text-sm font-medium text-accent">
+          Подзадачи и критерий готовности
+        </summary>
+        <ul class="subtasks-list mt-2xs list-disc space-y-4xs pl-xs text-sm text-muted-foreground"
+        ></ul>
+        <p class="done-when mt-2xs rounded-sm bg-muted p-2xs text-sm text-foreground"></p>
+      </details>
+    </article>
+  </template>
+
+  <script>
+    const ROADMAP_URL =
+      'https://raw.githubusercontent.com/chuck-uz/SMMPlatform/main/roadmap.json';
+
+    const STATUS_LABELS: Record<string, string> = {
+      todo: 'Ожидает',
+      in_progress: 'В работе',
+      blocked: 'Заблокировано',
+      done: 'Готово',
+    };
+
+    const TRACK_LABELS: Record<string, string> = {
+      A: 'Instagram · Трек A',
+      B: 'Instagram · Трек B',
+    };
+
+    function iconHtml(key: string): string {
+      const el = document.querySelector(`[data-icon-for="${key}"]`);
+      return el ? el.innerHTML : '';
+    }
+
+    function trackLabel(track: string): string {
+      return TRACK_LABELS[track] ?? track;
+    }
+
+    function renderDots(difficulty: number): string {
+      const filled = iconHtml('dot-filled');
+      const empty = iconHtml('dot-empty');
+      let out = '';
+      for (let i = 1; i <= 5; i++) {
+        out += `<span class="${i <= difficulty ? 'text-accent' : 'text-border'}">${
+          i <= difficulty ? filled : empty
+        }</span>`;
+      }
+      return out;
+    }
+
+    function buildCard(task: any, template: HTMLTemplateElement): HTMLElement {
+      const node = template.content.cloneNode(true) as HTMLElement;
+      const article = node.querySelector('.task-card') as HTMLElement;
+
+      (node.querySelector('.task-id') as HTMLElement).textContent = task.id;
+      (node.querySelector('.task-title') as HTMLElement).textContent = task.title;
+
+      const statusBadge = node.querySelector('.status-badge') as HTMLElement;
+      statusBadge.dataset.status = task.status;
+      (node.querySelector('.status-label') as HTMLElement).textContent =
+        STATUS_LABELS[task.status] ?? task.status;
+      (node.querySelector('.status-icon-slot') as HTMLElement).innerHTML = iconHtml(task.status);
+
+      (node.querySelector('.track-chip') as HTMLElement).textContent = trackLabel(task.track);
+
+      (node.querySelector('.dots') as HTMLElement).innerHTML = renderDots(task.difficulty);
+      (node.querySelector('.difficulty-text') as HTMLElement).textContent =
+        `Сложность ${task.difficulty}/5`;
+
+      const reviewBadge = node.querySelector('.review-badge') as HTMLElement;
+      if (task.review) {
+        reviewBadge.classList.remove('hidden');
+        reviewBadge.innerHTML = `${iconHtml('review')}<span>Нужен ревью Meta</span>`;
+      }
+
+      const depsLine = node.querySelector('.deps-line') as HTMLElement;
+      if (task.deps && task.deps.length > 0) {
+        depsLine.classList.remove('hidden');
+        (node.querySelector('.deps-list') as HTMLElement).textContent = task.deps.join(', ');
+      }
+
+      const subtasksList = node.querySelector('.subtasks-list') as HTMLElement;
+      (task.subtasks ?? []).forEach((subtask: string) => {
+        const li = document.createElement('li');
+        li.textContent = subtask;
+        subtasksList.appendChild(li);
+      });
+
+      (node.querySelector('.done-when') as HTMLElement).textContent = `Готово, когда: ${task.done_when}`;
+
+      article.dataset.track = task.track;
+      article.dataset.status = task.status;
+      article.dataset.difficulty = String(task.difficulty);
+
+      return node.firstElementChild as HTMLElement;
+    }
+
+    function populateSelect(select: HTMLSelectElement, entries: [string, string][]) {
+      entries.forEach(([value, label]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = label;
+        select.appendChild(option);
+      });
+    }
+
+    async function init() {
+      const stateLoading = document.getElementById('state-loading')!;
+      const stateError = document.getElementById('state-error')!;
+      const stateEmpty = document.getElementById('state-empty')!;
+      const listEl = document.getElementById('task-list')!;
+      const template = document.getElementById('task-card-template') as HTMLTemplateElement;
+      const retryButton = document.getElementById('retry-button')!;
+
+      const milestoneSelect = document.getElementById('filter-milestone') as HTMLSelectElement;
+      const trackSelect = document.getElementById('filter-track') as HTMLSelectElement;
+      const statusSelect = document.getElementById('filter-status') as HTMLSelectElement;
+      const sortSelect = document.getElementById('sort-order') as HTMLSelectElement;
+      const resultsCount = document.getElementById('results-count')!;
+
+      const progressFill = document.getElementById('progress-fill')!;
+      const progressTrack = document.getElementById('progress-track')!;
+      const progressFraction = document.getElementById('progress-fraction')!;
+      const progressBreakdown = document.getElementById('progress-breakdown')!;
+
+      stateLoading.classList.remove('hidden');
+      stateError.classList.add('hidden');
+      stateEmpty.classList.add('hidden');
+      listEl.innerHTML = '';
+
+      let data: any;
+      try {
+        // no-store: пропускаем HTTP-кэш браузера, чтобы статус обновлялся быстро после пуша
+        const res = await fetch(ROADMAP_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+      } catch (err) {
+        stateLoading.classList.add('hidden');
+        stateError.classList.remove('hidden');
+        return;
+      }
+
+      stateLoading.classList.add('hidden');
+
+      const tasks: any[] = data.tasks ?? [];
+      const milestones: Record<string, string[]> = data.milestones ?? {};
+      const tracks: Record<string, string> = data.tracks ?? {};
+
+      populateSelect(
+        milestoneSelect,
+        Object.keys(milestones).map((m) => [m, m]),
+      );
+      populateSelect(
+        trackSelect,
+        Object.keys(tracks).map((t) => [t, trackLabel(t)]),
+      );
+      populateSelect(
+        statusSelect,
+        Object.entries(STATUS_LABELS),
+      );
+
+      function updateProgress(scopeTasks: any[]) {
+        const total = scopeTasks.length;
+        const byStatus: Record<string, number> = { todo: 0, in_progress: 0, blocked: 0, done: 0 };
+        scopeTasks.forEach((t) => {
+          byStatus[t.status] = (byStatus[t.status] ?? 0) + 1;
+        });
+        const done = byStatus.done ?? 0;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        progressFill.style.width = `${pct}%`;
+        progressTrack.setAttribute('aria-valuenow', String(pct));
+        progressFraction.textContent = `${done} из ${total} задач готово (${pct}%)`;
+
+        progressBreakdown.innerHTML = '';
+        (Object.entries(byStatus) as [string, number][])
+          .filter(([, count]) => count > 0)
+          .forEach(([status, count]) => {
+            const span = document.createElement('span');
+            span.className =
+              'status-badge inline-flex items-center gap-4xs rounded-sm px-2xs py-4xs';
+            span.dataset.status = status;
+            span.textContent = `${STATUS_LABELS[status]}: ${count}`;
+            progressBreakdown.appendChild(span);
+          });
+      }
+
+      function applyFilters() {
+        const milestone = milestoneSelect.value;
+        const track = trackSelect.value;
+        const status = statusSelect.value;
+        const order = sortSelect.value;
+
+        const scopeIds = milestone === 'all' ? null : new Set(milestones[milestone] ?? []);
+        const scopeTasks = scopeIds ? tasks.filter((t) => scopeIds.has(t.id)) : tasks;
+
+        updateProgress(scopeTasks);
+
+        let filtered = scopeTasks.filter((t) => {
+          if (track !== 'all' && t.track !== track) return false;
+          if (status !== 'all' && t.status !== status) return false;
+          return true;
+        });
+
+        filtered = [...filtered].sort((a, b) =>
+          order === 'asc' ? a.difficulty - b.difficulty : b.difficulty - a.difficulty,
+        );
+
+        listEl.innerHTML = '';
+        if (filtered.length === 0) {
+          stateEmpty.classList.remove('hidden');
+        } else {
+          stateEmpty.classList.add('hidden');
+          filtered.forEach((task) => {
+            listEl.appendChild(buildCard(task, template));
+          });
+        }
+        resultsCount.textContent = `Показано задач: ${filtered.length} из ${scopeTasks.length}`;
+      }
+
+      [milestoneSelect, trackSelect, statusSelect, sortSelect].forEach((el) =>
+        el.addEventListener('change', applyFilters),
+      );
+
+      applyFilters();
+
+      retryButton.addEventListener('click', () => init());
+    }
+
+    init();
+  </script>
+</Layout>
